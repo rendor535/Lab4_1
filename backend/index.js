@@ -3,10 +3,20 @@
 const express = require('express');
 const app = express();
 
-// define endpoint for exercise 1 here
 app.get('/math/circle/:r', (req, res) => {
-//TODO1  
-  res.json(result);
+  const r = parseFloat(req.params.r);
+
+  if (isNaN(r) || r < 0) {
+    return res.status(400).json({ error: 'Invalid radius' });
+  }
+
+  const area = (Math.PI * r * r).toFixed(2);            // pole
+  const circumference = (2 * Math.PI * r).toFixed(2);   // obwód
+
+  res.json({
+    area,
+    circumference   
+  });
 });
 
 //TODO2
