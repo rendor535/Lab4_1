@@ -72,6 +72,29 @@ app.get('/math/isprime/:n', (req, res) => {
   return res.json({ number: n, isprime });
 });
 
+app.get('/math/gcdlcm/:a/:b', (req, res) => {
+  let a = parseInt(req.params.a);
+  let b = parseInt(req.params.b);
+
+  if (isNaN(a) || isNaN(b)) {
+    return res.status(400).json({ error: 'Invalid input' });
+  }
+
+  const gcd = (x, y) => {
+    while (y !== 0) {
+      let t = y;
+      y = x % y;
+      x = t;
+    }
+    return x;
+  };
+
+  const g = gcd(a, b);
+  const l = Math.abs(a * b) / g;
+
+  return res.json({ gcd: g, lcm: l });
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
