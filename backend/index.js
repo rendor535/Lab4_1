@@ -95,6 +95,26 @@ app.get('/math/gcdlcm/:a/:b', (req, res) => {
   return res.json({ gcd: g, lcm: l });
 });
 
+app.get('/math/average', (req, res) => {
+  const numerki = req.query.nums;
+  if (!numerki) return res.status(400).json({ error: 'Missing nums query' });
+
+  const nums = numerki.split(',').map(x => parseFloat(x)).filter(x => !isNaN(x));
+  if (nums.length === 0) return res.status(400).json({ error: 'No valid numbers' });
+
+  const n = nums.length;
+
+  const arithmetic = nums.reduce((a, b) => a + b, 0) / n;
+  const geometric = nums.reduce((a, b) => a * b, 1) ** (1 / n);
+  const harmonic = n / nums.reduce((a, b) => a + 1 / b, 0);
+
+  return res.json({
+    arithmetic,
+    geometric,
+    harmonic
+  });
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
